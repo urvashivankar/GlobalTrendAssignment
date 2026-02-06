@@ -2,18 +2,18 @@
 
 A full-stack, multi-user web application for managing tasks with a clean, modern interface. Built with Flask (Python) backend, vanilla JavaScript frontend, and MongoDB Atlas database.
 
-## 🚀 Features
+##  Features
 
-- 🔐 **User Authentication**: Secure sign-up and login with hashed passwords (JWT-based).
-- 👤 **Private Tasks**: Each user has their own personal task list.
-- ✅ **Task Management**: Create, view, update, and delete tasks.
-- 📅 **Due Dates**: Set deadlines for your tasks.
-- 🚦 **Priority Levels**: Assign priorities (Low, Medium, High) with color-coded badges.
-- 🔍 **Search & Filter**: Find tasks instantly by title or description, and filter by status or priority.
-- 🎨 **Modern UI**: Clean, responsive design with glassmorphism elements and smooth transitions.
-- 🔄 **Integrated Server**: Flask backend now serves both the API and the frontend files.
+-  **User Authentication**: Secure sign-up and login with hashed passwords (JWT-based).
+-  **Private Tasks**: Each user has their own personal task list.
+-  **Task Management**: Create, view, update, and delete tasks.
+-  **Due Dates**: Set deadlines for your tasks.
+-  **Priority Levels**: Assign priorities (Low, Medium, High) with color-coded badges.
+-  **Search & Filter**: Find tasks instantly by title or description, and filter by status or priority.
+-  **Modern UI**: Clean, responsive design with glassmorphism elements and smooth transitions.
+-  **Integrated Server**: Flask backend now serves both the API and the frontend files.
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 - **HTML5** - Structure
@@ -31,7 +31,7 @@ A full-stack, multi-user web application for managing tasks with a clean, modern
 ### Database
 - **MongoDB Atlas** - Cloud database service
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 task-management-system/
@@ -56,7 +56,7 @@ task-management-system/
 └── README.md                  # This file
 ```
 
-## 🔧 Setup Instructions
+##  Setup Instructions
 
 ### Step 1: MongoDB Atlas Setup
 1. Create a free cluster on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
@@ -81,7 +81,7 @@ task-management-system/
 2. Open your browser and go to: **`http://127.0.0.1:5000`**
 3. Create an account via the "Sign up" link to get started!
 
-## 📡 API Documentation
+##  API Documentation
 
 ### Auth Endpoints
 - `POST /auth/signup`: Create a new user (Body: name, email, password)
@@ -93,7 +93,7 @@ task-management-system/
 - `PUT /tasks/<id>`: Update a task
 - `DELETE /tasks/<id>`: Delete a task
 
-## 🗄️ Database Schema
+##  Database Schema
 
 ### Collection: `tasks`
 - `user_id`: Reference to the user who owns the task
@@ -104,10 +104,9 @@ task-management-system/
 - `due_date`: Task deadline
 - `created_at`: Creation timestamp
 
-## 🔒 Security Notes
+##  Security Notes
 - Passwords are encrypted using `pbkdf2:sha256` hashing.
 - API endpoints are protected using JWT (JSON Web Tokens).
 - Always keep your `SECRET_KEY` private.
 
 ---
-**Happy Coding! 🚀**
