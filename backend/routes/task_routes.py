@@ -6,15 +6,11 @@ from bson import ObjectId
 from models.task_model import TaskModel
 from routes.user_routes import token_required
 
-# Create blueprint for task routes
 task_bp = Blueprint('tasks', __name__)
 
-# Initialize task model
 task_model = TaskModel()
 
-# Valid status values
 VALID_STATUSES = ['Pending', 'In Progress', 'Completed']
-# Valid priority values
 VALID_PRIORITIES = ['Low', 'Medium', 'High']
 
 def _is_valid_task_id(task_id: str) -> bool:
@@ -40,36 +36,30 @@ def create_task(current_user):
     """
     try:
         data = request.get_json()
-        
-        # Validate required fields
-        if not data or 'title' not in data:
+                if not data or 'title' not in data:
             return jsonify({
                 'error': 'Title is required',
                 'message': 'Please provide a title for the task'
             }), 400
 
-        # Prevent empty/whitespace-only titles
         if not str(data.get('title', '')).strip():
             return jsonify({
                 'error': 'Title is required',
                 'message': 'Please provide a non-empty title for the task'
             }), 400
         
-        # Validate status if provided
         if 'status' in data and data['status'] not in VALID_STATUSES:
             return jsonify({
                 'error': 'Invalid status',
                 'message': f'Status must be one of: {", ".join(VALID_STATUSES)}'
             }), 400
         
-        # Validate priority if provided
         if 'priority' in data and data['priority'] not in VALID_PRIORITIES:
             return jsonify({
                 'error': 'Invalid priority',
                 'message': f'Priority must be one of: {", ".join(VALID_PRIORITIES)}'
             }), 400
         
-        # Prepare task data
         task_data = {
             'user_id': current_user['_id'],
             'title': data['title'].strip(),
@@ -79,7 +69,6 @@ def create_task(current_user):
             'due_date': None
         }
 
-        # Parse due_date if provided
         if 'due_date' in data and data['due_date']:
             from datetime import datetime
             try:
@@ -90,7 +79,6 @@ def create_task(current_user):
                     'message': 'Due date must be in ISO format'
                 }), 400
         
-        # Create task
         task = task_model.create_task(task_data)
         
         return jsonify({
@@ -193,7 +181,6 @@ def update_task(current_user, task_id):
                 'message': 'Task ID must be a valid MongoDB ObjectId'
             }), 400
 
-        # Check if task exists
         existing_task = task_model.get_task_by_id(task_id)
         if not existing_task:
             return jsonify({
@@ -215,14 +202,12 @@ def update_task(current_user, task_id):
                 'message': 'Please provide a non-empty title for the task'
             }), 400
         
-        # Validate priority if provided
         if 'priority' in data and data['priority'] not in VALID_PRIORITIES:
             return jsonify({
                 'error': 'Invalid priority',
                 'message': f'Priority must be one of: {", ".join(VALID_PRIORITIES)}'
             }), 400
         
-        # Prepare update data
         update_data = {}
         if 'title' in data:
             update_data['title'] = data['title'].strip()
@@ -245,7 +230,6 @@ def update_task(current_user, task_id):
             else:
                 update_data['due_date'] = None
         
-        # Update task
         updated_task = task_model.update_task(task_id, update_data)
         
         if not updated_task:
@@ -285,7 +269,6 @@ def delete_task(current_user, task_id):
                 'message': 'Task ID must be a valid MongoDB ObjectId'
             }), 400
 
-        # Check if task exists
         existing_task = task_model.get_task_by_id(task_id)
         if not existing_task:
             return jsonify({
@@ -293,7 +276,6 @@ def delete_task(current_user, task_id):
                 'message': f'No task found with ID: {task_id}'
             }), 404
         
-        # Delete task
         deleted = task_model.delete_task(task_id)
         
         if not deleted:

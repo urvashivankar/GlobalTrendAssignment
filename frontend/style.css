@@ -318,7 +318,6 @@ button:active {
     color: #0f5132;
 }
 
-/* Priority Styles */
 .priority {
     display: inline-block;
     padding: 5px 15px;
@@ -384,7 +383,6 @@ button:active {
     background: #c82333;
 }
 
-/* Loading and Empty States */
 .loading,
 .empty-state {
     grid-column: 1 / -1;
@@ -398,7 +396,6 @@ button:active {
     color: #999;
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -500,7 +497,6 @@ button:active {
     border: 1px solid #c3e6cb;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     header h1 {
         font-size: 2rem;

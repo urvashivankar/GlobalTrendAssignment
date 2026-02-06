@@ -11,12 +11,10 @@
 </head>
 
 <body>
-    <!-- Auth Overlay -->
     <div id="authOverlay" class="auth-overlay">
         <div class="auth-box">
             <h1 id="authTitle">📋 Task Manager</h1>
 
-            <!-- Login Form -->
             <form id="loginForm" class="auth-form">
                 <h2>Login</h2>
                 <div class="form-group">
@@ -31,7 +29,6 @@
                 <p>Don't have an account? <a href="#" id="showSignup">Sign up here</a></p>
             </form>
 
-            <!-- Signup Form (Hidden by default) -->
             <form id="signupForm" class="auth-form" style="display: none;">
                 <h2>Create Account</h2>
                 <div class="form-group">
@@ -53,7 +50,6 @@
     </div>
 
     <div id="mainContent" class="container" style="display: none;">
-        <!-- Header -->
         <header>
             <div class="header-content">
                 <h1>📋 Task Management System</h1>
@@ -65,7 +61,6 @@
             <p>Organize and manage your tasks efficiently</p>
         </header>
 
-        <!-- Add Task Form -->
         <section class="task-form-section">
             <h2>Add New Task</h2>
             <form id="taskForm">
@@ -109,7 +104,6 @@
             </form>
         </section>
 
-        <!-- Search and Filter Section -->
         <section class="filter-section">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Search tasks by title or description...">
@@ -134,17 +128,14 @@
             </div>
         </section>
 
-        <!-- Tasks List -->
         <section class="tasks-section">
             <h2>Your Tasks</h2>
             <div id="tasksContainer" class="tasks-container">
-                <!-- Tasks will be dynamically loaded here -->
                 <div class="loading" id="loading">Loading tasks...</div>
             </div>
         </section>
     </div>
 
-    <!-- Edit Task Modal -->
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

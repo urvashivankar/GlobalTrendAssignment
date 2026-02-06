@@ -21,7 +21,6 @@ def token_required(f):
             return jsonify({'message': 'Token is missing!'}), 401
         
         try:
-            # Token usually comes as "Bearer <token>"
             if token.startswith('Bearer '):
                 token = token.split(" ")[1]
             

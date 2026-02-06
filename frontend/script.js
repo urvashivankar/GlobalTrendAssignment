@@ -1,8 +1,6 @@
 
-// Backend API base URL
 const API_BASE_URL = 'http://localhost:5000';
 
-// DOM Elements
 const taskForm = document.getElementById('taskForm');
 const tasksContainer = document.getElementById('tasksContainer');
 const editModal = document.getElementById('editModal');
@@ -21,20 +19,14 @@ const showLogin = document.getElementById('showLogin');
 const logoutBtn = document.getElementById('logoutBtn');
 const userNameDisplay = document.getElementById('userNameDisplay');
 
-// Global state
 let allTasks = [];
 
-/**
- * Initialize the application
- */
+
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
     setupEventListeners();
 });
 
-/**
- * Check if user is authenticated
- */
 function checkAuth() {
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
@@ -51,24 +43,19 @@ function checkAuth() {
 }
 
 function setupEventListeners() {
-    // Add task form submission
     taskForm.addEventListener('submit', handleAddTask);
 
-    // Edit form submission
     editForm.addEventListener('submit', handleUpdateTask);
 
-    // Close modal events
     closeModal.addEventListener('click', closeEditModal);
     cancelBtn.addEventListener('click', closeEditModal);
 
-    // Close modal when clicking outside
     window.addEventListener('click', (event) => {
         if (event.target === editModal) {
             closeEditModal();
         }
     });
 
-    // Auth events
     showSignup.addEventListener('click', (e) => {
         e.preventDefault();
         loginForm.style.display = 'none';
@@ -85,15 +72,11 @@ function setupEventListeners() {
     signupForm.addEventListener('submit', handleSignup);
     logoutBtn.addEventListener('click', handleLogout);
 
-    // Filtering event listeners
     searchInput.addEventListener('input', filterTasks);
     statusFilter.addEventListener('change', filterTasks);
     priorityFilter.addEventListener('change', filterTasks);
 }
 
-/**
- * Handle Login
- */
 async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
@@ -121,9 +104,7 @@ async function handleLogin(e) {
     }
 }
 
-/**
- * Handle Signup
- */
+
 async function handleSignup(e) {
     e.preventDefault();
     const name = document.getElementById('signupName').value;
@@ -156,9 +137,7 @@ async function handleSignup(e) {
     }
 }
 
-/**
- * Handle Logout
- */
+
 function handleLogout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -166,9 +145,6 @@ function handleLogout() {
     showSuccess('Logged out successfully');
 }
 
-/**
- * Load all tasks from the backend
- */
 async function loadTasks() {
     try {
         showLoading();
@@ -191,9 +167,7 @@ async function loadTasks() {
     }
 }
 
-/**
- * Display tasks in the container
- */
+
 function displayTasks(tasks) {
     tasksContainer.innerHTML = '';
 
@@ -208,26 +182,20 @@ function displayTasks(tasks) {
     });
 }
 
-/**
- * Create a task card element
- */
+
 function createTaskCard(task) {
     const card = document.createElement('div');
     card.className = 'task-card';
     card.dataset.taskId = task._id;
 
-    // Format created_at date
     const createdDate = task.created_at
         ? new Date(task.created_at).toLocaleString()
         : 'Unknown';
 
-    // Status class for styling
     const statusClass = task.status.toLowerCase().replace(' ', '-');
 
-    // Priority class for styling
     const priorityClass = (task.priority || 'Medium').toLowerCase();
 
-    // Due date display
     let dueDateHtml = '';
     if (task.due_date) {
         const dueDate = new Date(task.due_date);
@@ -255,9 +223,6 @@ function createTaskCard(task) {
     return card;
 }
 
-/**
- * Handle add task form submission
- */
 async function handleAddTask(event) {
     event.preventDefault();
 
@@ -269,7 +234,6 @@ async function handleAddTask(event) {
         due_date: document.getElementById('dueDate').value
     };
 
-    // Validate title
     if (!formData.title) {
         showError('Title is required');
         return;
@@ -289,10 +253,8 @@ async function handleAddTask(event) {
         const data = await response.json();
 
         if (response.ok) {
-            // Reset form
             taskForm.reset();
             showSuccess('Task created successfully!');
-            // Reload tasks
             loadTasks();
         } else {
             showError('Failed to create task: ' + (data.message || 'Unknown error'));
@@ -303,9 +265,7 @@ async function handleAddTask(event) {
     }
 }
 
-/**
- * Open edit modal and populate with task data
- */
+
 async function openEditModal(taskId) {
     try {
         const token = localStorage.getItem('token');
@@ -317,14 +277,12 @@ async function openEditModal(taskId) {
         if (response.ok && data.task) {
             const task = data.task;
 
-            // Populate form fields
             document.getElementById('editTaskId').value = task._id;
             document.getElementById('editTitle').value = task.title || '';
             document.getElementById('editDescription').value = task.description || '';
             document.getElementById('editStatus').value = task.status || 'Pending';
             document.getElementById('editPriority').value = task.priority || 'Medium';
 
-            // Format date for input field (YYYY-MM-DD)
             if (task.due_date) {
                 const date = new Date(task.due_date);
                 const year = date.getFullYear();
@@ -335,7 +293,6 @@ async function openEditModal(taskId) {
                 document.getElementById('editDueDate').value = '';
             }
 
-            // Show modal
             editModal.style.display = 'block';
         } else {
             showError('Failed to load task: ' + (data.message || 'Unknown error'));
@@ -346,17 +303,12 @@ async function openEditModal(taskId) {
     }
 }
 
-/**
- * Close edit modal
- */
+
 function closeEditModal() {
     editModal.style.display = 'none';
     editForm.reset();
 }
 
-/**
- * Handle update task form submission
- */
 async function handleUpdateTask(event) {
     event.preventDefault();
 
@@ -368,8 +320,6 @@ async function handleUpdateTask(event) {
         priority: document.getElementById('editPriority').value,
         due_date: document.getElementById('editDueDate').value
     };
-
-    // Validate title
     if (!formData.title) {
         showError('Title is required');
         return;
@@ -391,7 +341,6 @@ async function handleUpdateTask(event) {
         if (response.ok) {
             closeEditModal();
             showSuccess('Task updated successfully!');
-            // Reload tasks
             loadTasks();
         } else {
             showError('Failed to update task: ' + (data.message || 'Unknown error'));
@@ -402,11 +351,8 @@ async function handleUpdateTask(event) {
     }
 }
 
-/**
- * Handle delete task
- */
+
 async function handleDeleteTask(taskId) {
-    // Confirm deletion
     if (!confirm('Are you sure you want to delete this task?')) {
         return;
     }
@@ -422,7 +368,6 @@ async function handleDeleteTask(taskId) {
 
         if (response.ok) {
             showSuccess('Task deleted successfully!');
-            // Reload tasks
             loadTasks();
         } else {
             showError('Failed to delete task: ' + (data.message || 'Unknown error'));
@@ -433,80 +378,61 @@ async function handleDeleteTask(taskId) {
     }
 }
 
-/**
- * Show loading state
- */
+
 function showLoading() {
     tasksContainer.innerHTML = '<div class="loading">Loading tasks...</div>';
 }
 
-/**
- * Show error message
- */
+
 function showError(message) {
-    // Remove existing messages
     removeMessages();
 
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
 
-    // Insert at the top of the container
     const container = document.querySelector('.container');
     container.insertBefore(errorDiv, container.firstChild);
 
-    // Auto-remove after 5 seconds
     setTimeout(() => {
         errorDiv.remove();
     }, 5000);
 }
 
-/**
- * Show success message
- */
+
 function showSuccess(message) {
-    // Remove existing messages
     removeMessages();
 
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
     successDiv.textContent = message;
 
-    // Insert at the top of the container
     const container = document.querySelector('.container');
     container.insertBefore(successDiv, container.firstChild);
 
-    // Auto-remove after 3 seconds
     setTimeout(() => {
         successDiv.remove();
     }, 3000);
 }
 
-/**
- * Remove existing messages
- */
+
 function removeMessages() {
     const existingMessages = document.querySelectorAll('.error-message, .success-message');
     existingMessages.forEach(msg => msg.remove());
 }
 
-/**
- * Filter tasks based on search input and filter selections
- */
+
 function filterTasks() {
     const searchTerm = searchInput.value.toLowerCase();
     const statusVal = statusFilter.value;
     const priorityVal = priorityFilter.value;
 
     const filteredTasks = allTasks.filter(task => {
-        // Search filter (title or description)
         const matchesSearch = task.title.toLowerCase().includes(searchTerm) ||
             (task.description && task.description.toLowerCase().includes(searchTerm));
 
-        // Status filter
         const matchesStatus = statusVal === 'All' || task.status === statusVal;
 
-        // Priority filter
         const matchesPriority = priorityVal === 'All' || (task.priority || 'Medium') === priorityVal;
 
         return matchesSearch && matchesStatus && matchesPriority;
@@ -515,9 +441,7 @@ function filterTasks() {
     displayTasks(filteredTasks);
 }
 
-/**
- * Escape HTML to prevent XSS attacks
- */
+
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
