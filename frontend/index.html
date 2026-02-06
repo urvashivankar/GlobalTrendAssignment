@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+</head>
+
+<body>
+    <!-- Auth Overlay -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-box">
+            <h1 id="authTitle">📋 Task Manager</h1>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit">Login</button>
+                <p>Don't have an account? <a href="#" id="showSignup">Sign up here</a></p>
+            </form>
+
+            <!-- Signup Form (Hidden by default) -->
+            <form id="signupForm" class="auth-form" style="display: none;">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required placeholder="Minimum 6 characters">
+                </div>
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="mainContent" class="container" style="display: none;">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>📋 Task Management System</h1>
+                <div class="user-info">
+                    <span id="userNameDisplay">Welcome, User</span>
+                    <button id="logoutBtn" class="btn-logout">Logout</button>
+                </div>
+            </div>
+            <p>Organize and manage your tasks efficiently</p>
+        </header>
+
+        <!-- Add Task Form -->
+        <section class="task-form-section">
+            <h2>Add New Task</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="title">Title <span class="required">*</span></label>
+                    <input type="text" id="title" name="title" placeholder="Enter task title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3"
+                        placeholder="Enter task description (optional)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group flex-1">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" name="dueDate">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn">Add Task</button>
+            </form>
+        </section>
+
+        <!-- Search and Filter Section -->
+        <section class="filter-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search tasks by title or description...">
+            </div>
+            <div class="filter-controls">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter">
+                    <option value="All">All Statuses</option>
+                    <option value="Pending">Pending Only</option>
+                    <option value="In Progress">In Progress Only</option>
+                    <option value="Completed">Completed Only</option>
+                </select>
+            </div>
+            <div class="filter-controls">
+                <label for="priorityFilter">Filter by Priority:</label>
+                <select id="priorityFilter">
+                    <option value="All">All Priorities</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Tasks List -->
+        <section class="tasks-section">
+            <h2>Your Tasks</h2>
+            <div id="tasksContainer" class="tasks-container">
+                <!-- Tasks will be dynamically loaded here -->
+                <div class="loading" id="loading">Loading tasks...</div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Task</h2>
+            <form id="editForm">
+                <input type="hidden" id="editTaskId">
+
+                <div class="form-group">
+                    <label for="editTitle">Title <span class="required">*</span></label>
+                    <input type="text" id="editTitle" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus" name="status">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="editPriority">Priority</label>
+                        <select id="editPriority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group flex-1">
+                        <label for="editDueDate">Due Date</label>
+                        <input type="date" id="editDueDate" name="dueDate">
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" id="updateBtn">Update Task</button>
+                    <button type="button" id="cancelBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
